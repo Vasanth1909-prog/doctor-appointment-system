@@ -1,0 +1,6 @@
+venv/
+.idea/
+_pycache_/
+*.pyc
+db.sqlite3
+Doctor-Appointment-System-Django final zip/

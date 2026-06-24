@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <script>
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ order.amount }}",
+            "currency": "INR",
+            "name": "Doctor Appointment System",
+            "description": "Appointment Payment",
+            "order_id": "{{ order.id }}",
+            "handler": function (response) {
+                // Create a form and submit it to your callback URL
+                var form = document.createElement("form");
+                form.setAttribute("method", "POST");
+                form.setAttribute("action", "{{ callback_url }}");
+                
+                var csrfInput = document.createElement("input");
+                csrfInput.setAttribute("type", "hidden");
+                csrfInput.setAttribute("name", "csrfmiddlewaretoken");
+                csrfInput.setAttribute("value", "{{ csrf_token }}");
+                form.appendChild(csrfInput);
+                
+                var paymentId = document.createElement("input");
+                paymentId.setAttribute("type", "hidden");
+                paymentId.setAttribute("name", "razorpay_payment_id");
+                paymentId.setAttribute("value", response.razorpay_payment_id);
+                form.appendChild(paymentId);
+                
+                var orderId = document.createElement("input");
+                orderId.setAttribute("type", "hidden");
+                orderId.setAttribute("name", "razorpay_order_id");
+                orderId.setAttribute("value", response.razorpay_order_id);
+                form.appendChild(orderId);
+                
+                var signature = document.createElement("input");
+                signature.setAttribute("type", "hidden");
+                signature.setAttribute("name", "razorpay_signature");
+                signature.setAttribute("value", response.razorpay_signature);
+                form.appendChild(signature);
+                
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+    </script>
+</body>
+</html>

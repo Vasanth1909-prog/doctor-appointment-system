@@ -1,0 +1,29 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h3>Appointment Booked Successfully!</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Appointment Number:</strong> {{ appointment.appointmentnumber }}</p>
+            <p><strong>Patient Name:</strong> {{ appointment.fullname }}</p>
+            <p><strong>Email:</strong> {{ appointment.email }}</p>
+            <p><strong>Mobile:</strong> {{ appointment.mobilenumber }}</p>
+            <p><strong>Doctor:</strong> Dr. {{ appointment.doctor_id.admin.first_name }} {{ appointment.doctor_id.admin.last_name }}</p>
+            <p><strong>Date:</strong> {{ appointment.date_of_appointment }}</p>
+            <p><strong>Time:</strong> {{ appointment.time_of_appointment }}</p>
+            <p><strong>Payment Method:</strong> {{ appointment.payment_method }}</p>
+            <p><strong>Payment Status:</strong> {{ appointment.payment_status }}</p>
+            {% if appointment.video_link %}
+                <p><strong>Video Consultation Link:</strong> <a href="{{ appointment.video_link }}" target="_blank">{{ appointment.video_link }}</a></p>
+                <p><strong>Meeting ID:</strong> {{ appointment.meeting_id }}</p>
+            {% endif %}
+            <p><strong>Status:</strong> {{ appointment.status }}</p>
+            <a href="{% url 'index' %}" class="btn btn-primary">Go to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

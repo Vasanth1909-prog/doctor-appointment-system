@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure UPI Payment</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            padding: 40px 20px;
+        }
+
+        .payment-wrapper {
+            max-width: 900px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 28px;
+        }
+
+        .left h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            color: #1d4ed8;
+        }
+
+        .subtext {
+            color: #5b6472;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: 1px solid #edf0f5;
+            font-size: 18px;
+        }
+
+        .detail-row span:first-child {
+            font-weight: bold;
+            color: #2a2f36;
+        }
+
+        .detail-row span:last-child {
+            color: #4b5563;
+            text-align: right;
+        }
+
+        .amount-box {
+            margin-top: 22px;
+            background: #f8fbff;
+            border: 1px solid #dbe7ff;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .amount-label {
+            color: #5b6472;
+            font-size: 15px;
+        }
+
+        .amount-value {
+            margin-top: 8px;
+            font-size: 34px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .right {
+            text-align: center;
+        }
+
+        .gateway-pill {
+            display: inline-block;
+            background: #e9f7ef;
+            color: #15803d;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .qr-shell {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .qr-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .qr-subtitle {
+            color: #6b7280;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        .qr-box {
+            width: 230px;
+            height: 230px;
+            margin: 0 auto 18px;
+            background:
+                linear-gradient(90deg, #000 10px, transparent 10px) 0 0/40px 40px,
+                linear-gradient(#000 10px, transparent 10px) 0 0/40px 40px,
+                linear-gradient(90deg, transparent 30px, #000 30px 40px) 0 0/40px 40px,
+                linear-gradient(transparent 30px, #000 30px 40px) 0 0/40px 40px,
+                #fff;
+            border: 10px solid #fff;
+            outline: 1px solid #d1d5db;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .qr-box::before,
+        .qr-box::after {
+            content: "";
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            border: 8px solid #000;
+            background: #fff;
+        }
+
+        .qr-box::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        .qr-box::after {
+            top: 10px;
+            right: 10px;
+        }
+
+        .qr-center {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 52px;
+            height: 52px;
+            border: 8px solid #000;
+            background: #fff;
+        }
+
+        .upi-id {
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .note {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 8px 6px 0;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #dc2626;
+            color: white;
+        }
+
+        .apps {
+            margin-top: 18px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .payment-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .detail-row span:last-child {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-wrapper">
+        <div class="card left">
+            <h2>Secure UPI Payment</h2>
+            <div class="subtext">Complete your appointment payment using any UPI-enabled app.</div>
+
+            <div class="detail-row">
+                <span>Appointment No</span>
+                <span>{{ appointment.appointmentnumber }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Patient Name</span>
+                <span>{{ appointment.fullname }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Doctor</span>
+                <span>{{ appointment.doctor_id }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Payment Method</span>
+                <span>UPI / QR Scan</span>
+            </div>
+
+            <div class="amount-box">
+                <div class="amount-label">Amount Payable</div>
+                <div class="amount-value">₹{{ appointment.payment_amount|default:"500" }}</div>
+            </div>
+        </div>
+
+        <div class="card right">
+            <div class="gateway-pill">Verified Gateway</div>
+
+            <div class="qr-shell">
+                <div class="qr-title">Scan & Pay</div>
+                <div class="qr-subtitle">Use PhonePe, Google Pay, Paytm or any UPI app</div>
+
+                <div class="qr-box">
+                    <div class="qr-center"></div>
+                </div>
+
+                <div class="upi-id">UPI ID: hospitalcare@upi</div>
+                <div class="note">
+                    Scan the QR code and complete the payment.<br>
+                    After payment, click confirm to continue.
+                </div>
+
+                <a href="{% url 'dummy_payment_process' appointment.id 'success' %}" class="btn btn-success">Confirm Payment</a>
+                <a href="{% url 'dummy_payment_process' appointment.id 'failed' %}" class="btn btn-cancel">Cancel</a>
+
+                <div class="apps">Supported apps: PhonePe • Google Pay • Paytm • BHIM</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
