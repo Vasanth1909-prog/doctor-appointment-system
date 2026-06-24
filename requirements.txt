@@ -4,3 +4,5 @@ whitenoise
 Pillow
 razorpay
 requests
+django-bootstrap5
+django-jazzmin
